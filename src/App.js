@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { AuthProvider, AuthContext } from './AuthContext'; // Import AuthContext
+import Auth from './Auth'; // Component for sign in/sign up
+import Todo from './Todo'; // Your todo component
 
-function App() {
+const App = () => {
+  const { user, logout } = React.useContext(AuthContext); // Access the user and logout function from AuthContext
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <div>
+        {user ? (
+          <div>
+            <h1>Welcome, {user.email}</h1>
+            <button onClick={logout}>Log Out</button>
+            <Todo user={user} />
+          </div>
+        ) : (
+          <Auth /> // Show the Auth component if user is not logged in
+        )}
+      </div>
+    </AuthProvider>
   );
-}
+};
 
 export default App;
